@@ -11,12 +11,10 @@ void main(List<String> arguments) async {
     ..get('/rest', handleHttpRequest)
     ..get('/ws', shelf_ws.webSocketHandler(handleWebSocketConnect));
 
-  final port = Platform.environment['PORT'];
-  final server = await shelf_io.serve(
-    app,
-    '0.0.0.0',
-    port == null ? 8080 : int.parse(port),
-  );
+  final port = Platform.environment.containsKey('PORT')
+      ? int.parse(Platform.environment['PORT']!)
+      : 8080;
+  final server = await shelf_io.serve(app, '0.0.0.0', port);
 
   print('Listening on :${server.port}');
 }
